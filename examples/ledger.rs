@@ -77,11 +77,12 @@ pub fn main() {
     let spend_key_secret_hash =
         CRH::<Fr>::evaluate(&poseidon_config.clone(), mapped_spend_keys.clone()).unwrap();
 
-    let secret_hash = CRH::<Fr>::evaluate(&poseidon_config, transaction_hashes.clone()).unwrap();
+    let secret_hash =
+        CRH::<Fr>::evaluate(&poseidon_config.clone(), transaction_hashes.clone()).unwrap();
     let z_0 = vec![secret_hash];
     let f_circuit = TCircuit::<Fr>::new(poseidon_config.clone()).unwrap();
     let mut rng = rand::rngs::OsRng;
-    let nova_preprocess_params = PreprocessorParam::new(poseidon_config, f_circuit.clone());
+    let nova_preprocess_params = PreprocessorParam::new(poseidon_config.clone(), f_circuit.clone());
     pub type NOVA = Nova<G1, GVar, G2, GVar2, TCircuit<Fr>, KZG<'static, Bn254>, Pedersen<G2>>;
     let nova_params = NOVA::preprocess(&mut rng, &nova_preprocess_params).unwrap();
     // Initialize the folding scheme engine, in our case we use Nova
