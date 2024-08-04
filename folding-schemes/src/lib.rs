@@ -17,7 +17,7 @@ pub mod folding;
 pub mod frontend;
 pub mod transcript;
 pub mod utils;
-
+pub mod zcash;
 #[derive(Debug, Error)]
 pub enum Error {
     // Wrappers on top of other errors

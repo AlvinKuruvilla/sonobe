@@ -8,12 +8,16 @@ ark-ec = "^0.4.0"
 ark-ff = "^0.4.0"
 ark-poly = "^0.4.0"
 ark-std = "^0.4.0"
-ark-crypto-primitives = { version = "^0.4.0", default-features = false, features = ["r1cs", "sponge", "crh"] }
-ark-grumpkin = {version="0.4.0"}
+ark-crypto-primitives = { version = "^0.4.0", default-features = false, features = [
+    "r1cs",
+    "sponge",
+    "crh",
+] }
+ark-grumpkin = { version = "0.4.0" }
 ark-poly-commit = "^0.4.0"
 ark-relations = { version = "^0.4.0", default-features = false }
 ark-r1cs-std = { version = "0.4.0", default-features = false } # this is patched at the workspace level
-ark-snark = { version = "^0.4.0"}
+ark-snark = { version = "^0.4.0" }
 ark-serialize = "^0.4.0"
 ark-circom = { git = "https://github.com/arnaucube/circom-compat" }
 thiserror = "1.0"
@@ -21,40 +25,42 @@ rayon = "1.7.0"
 num-bigint = "0.4"
 num-integer = "0.1"
 color-eyre = "=0.6.2"
-ark-bn254 = {version="0.4.0"}
+ark-bn254 = { version = "0.4.0" }
 ark-groth16 = { version = "^0.4.0" }
 sha3 = "0.10"
-ark-noname = { git = "https://github.com/dmpierre/ark-noname", branch="feat/sonobe-integration" }
+ark-noname = { git = "https://github.com/dmpierre/ark-noname", branch = "feat/sonobe-integration" }
 noname = { git = "https://github.com/dmpierre/noname" }
-serde_json = "1.0.85"                                                                # to (de)serialize JSON
+serde_json = "1.0.85" # to (de)serialize JSON
 serde = "1.0.203"
-acvm = { git = "https://github.com/noir-lang/noir", rev="2b4853e", default-features = false }
-arkworks_backend = { git = "https://github.com/dmpierre/arkworks_backend", branch="feat/sonobe-integration" }
+acvm = { git = "https://github.com/noir-lang/noir", rev = "2b4853e", default-features = false }
+arkworks_backend = { git = "https://github.com/dmpierre/arkworks_backend", branch = "feat/sonobe-integration" }
 
 # tmp import for espresso's sumcheck
-espresso_subroutines = {git="https://github.com/EspressoSystems/hyperplonk", package="subroutines"}
+espresso_subroutines = { git = "https://github.com/EspressoSystems/hyperplonk", package = "subroutines" }
 
 [dev-dependencies]
-ark-pallas = {version="0.4.0", features=["r1cs"]}
-ark-vesta = {version="0.4.0", features=["r1cs"]}
-ark-bn254 = {version="0.4.0", features=["r1cs"]}
-ark-grumpkin = {version="0.4.0", features=["r1cs"]}
+ark-pallas = { version = "0.4.0", features = ["r1cs"] }
+ark-vesta = { version = "0.4.0", features = ["r1cs"] }
+ark-bn254 = { version = "0.4.0", features = ["r1cs"] }
+ark-grumpkin = { version = "0.4.0", features = ["r1cs"] }
 rand = "0.8.5"
-tracing = { version = "0.1", default-features = false, features = [ "attributes" ] }
+tracing = { version = "0.1", default-features = false, features = [
+    "attributes",
+] }
 tracing-subscriber = { version = "0.2" }
 
 [features]
 default = ["parallel"]
 light-test = []
 
-parallel = [ 
-    "ark-std/parallel", 
-    "ark-ff/parallel",  
-    "ark-ec/parallel",  
-    "ark-poly/parallel", 
-    "ark-crypto-primitives/parallel",  
-    "ark-r1cs-std/parallel",  
-    ]
+parallel = [
+    "ark-std/parallel",
+    "ark-ff/parallel",
+    "ark-ec/parallel",
+    "ark-poly/parallel",
+    "ark-crypto-primitives/parallel",
+    "ark-r1cs-std/parallel",
+]
 
 
 [[example]]
@@ -68,3 +74,23 @@ path = "../examples/multi_inputs.rs"
 [[example]]
 name = "external_inputs"
 path = "../examples/external_inputs.rs"
+
+[[example]]
+name = "fq_flow"
+path = "../examples/fq_flow.rs"
+
+[[example]]
+name = "merkle"
+path = "../examples/merkle.rs"
+
+[[example]]
+name = "coin"
+path = "../examples/coin_gen.rs"
+
+[[example]]
+name = "t"
+path = "../examples/t_hash.rs"
+
+[[example]]
+name = "ledger"
+path = "../examples/ledger.rs"
