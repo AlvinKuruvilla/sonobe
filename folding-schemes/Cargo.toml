@@ -47,8 +47,7 @@ rand = "0.8.5"
 tracing = { version = "0.1", default-features = false, features = [
     "attributes",
 ] }
-tracing-subscriber = { version = "0.2" }
-
+tracing-subscriber = { version = "0.3.18" }
 [features]
 default = ["parallel"]
 light-test = []
@@ -94,3 +93,6 @@ path = "../examples/t_hash.rs"
 [[example]]
 name = "ledger"
 path = "../examples/ledger.rs"
+[[example]]
+name = "ts"
+path = "../examples/transaction_split.rs"

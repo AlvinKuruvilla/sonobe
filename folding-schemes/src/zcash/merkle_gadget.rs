@@ -6,12 +6,12 @@ use ark_crypto_primitives::crh::{
     CRHScheme, CRHSchemeGadget,
 };
 use ark_ff::{BigInteger, PrimeField, ToConstraintField};
-use ark_r1cs_std::{fields::fp::FpVar, ToBytesGadget, ToConstraintFieldGadget};
+use ark_r1cs_std::{
+    eq::EqGadget, fields::fp::FpVar, prelude::Boolean, ToBytesGadget, ToConstraintFieldGadget,
+};
 use ark_relations::r1cs::SynthesisError;
 
 pub struct MerkleTreeGadget;
-// TODO: See if we can leverage a library like merkle_rs instead of having to do this work ourselves. This will make leaf node
-// verification most likely simpler
 pub fn hash_pair<F: PrimeField>(
     left: FpVar<F>,
     right: FpVar<F>,
@@ -70,5 +70,28 @@ impl MerkleTreeGadget {
         }
 
         current_level[0]
+    }
+    pub fn verify_leaf_node<F: PrimeField>(
+        leaf_hash: FpVar<F>,
+        proof: Vec<FpVar<F>>,
+        root_hash: FpVar<F>,
+    ) -> Result<Boolean<F>, SynthesisError> {
+        // Initialize current hash with the leaf hash
+        let mut current_hash = leaf_hash;
+
+        // Iterate through proof hashes to compute the hash up to the root
+        for sibling_hash in proof {
+            // Combine the current hash with the sibling hash
+            let pair = vec![current_hash.clone(), sibling_hash.clone()];
+
+            // Compute the hash of the pair
+            let hash_result = hash_pair(pair[0].clone(), pair[1].clone())?;
+
+            // Update current hash with the computed pair hash
+            current_hash = hash_result[0].clone();
+        }
+
+        // Check if the computed hash matches the root hash
+        current_hash.is_eq(&root_hash)
     }
 }
