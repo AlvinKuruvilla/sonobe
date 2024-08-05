@@ -94,4 +94,47 @@ impl MerkleTreeGadget {
         // Check if the computed hash matches the root hash
         current_hash.is_eq(&root_hash)
     }
+    pub fn create_merkle_tree<F: PrimeField>(
+        leaves: Vec<FpVar<F>>,
+    ) -> Result<FpVar<F>, SynthesisError> {
+        MerkleTreeGadget::create_root_hash(leaves)
+    }
+    pub fn generate_proof<F: PrimeField>(
+        index: usize,
+        leaves: &[FpVar<F>],
+    ) -> Result<Vec<FpVar<F>>, SynthesisError> {
+        let leaves = leaves.to_owned();
+        if leaves.len() % 2 != 0 {
+            panic!("Number of leaves must be even");
+        }
+
+        let mut current_level = leaves.clone();
+        let mut proof = vec![];
+        let mut idx = index;
+
+        while current_level.len() > 1 {
+            let mut next_level = vec![];
+            for i in (0..current_level.len()).step_by(2) {
+                if i == idx || i + 1 == idx {
+                    let sibling_idx = if i == idx { i + 1 } else { i };
+                    proof.push(current_level[sibling_idx].clone());
+                    idx = next_level.len();
+                }
+                let hash =
+                    hash_pair(current_level[i].clone(), current_level[i + 1].clone())?[0].clone();
+                next_level.push(hash);
+            }
+
+            current_level = next_level;
+        }
+
+        Ok(proof)
+    }
+    pub fn verify_proof<F: PrimeField>(
+        leaf: FpVar<F>,
+        proof: Vec<FpVar<F>>,
+        root: FpVar<F>,
+    ) -> Result<Boolean<F>, SynthesisError> {
+        MerkleTreeGadget::verify_leaf_node(leaf, proof, root)
+    }
 }
