@@ -54,7 +54,7 @@ impl<F: PrimeField> FCircuit<F> for CoinCircuit<F> {
     ) -> Result<Vec<FpVar<F>>, SynthesisError> {
         let sn = &z_i[0];
         let r = &z_i[1];
-        let data = ZcashCoinGadget::generate_coin(sn.clone(), r.clone(), z_i[2].clone())?;
+        let data = ZcashCoinGadget::generate_coin(sn.clone(), r.clone(), z_i[2].clone(), cs)?;
         let cm = data[0].clone();
         Ok(vec![cm, sn.clone(), r.clone(), data[3].clone()])
     }

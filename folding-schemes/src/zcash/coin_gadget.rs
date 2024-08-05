@@ -7,7 +7,7 @@ use ark_crypto_primitives::crh::{
 };
 use ark_ff::{BigInteger, PrimeField, ToConstraintField};
 use ark_r1cs_std::{fields::fp::FpVar, ToBytesGadget, ToConstraintFieldGadget};
-use ark_relations::r1cs::SynthesisError;
+use ark_relations::r1cs::{ConstraintSystemRef, SynthesisError};
 
 use super::merkle_gadget::MerkleTreeGadget;
 
@@ -32,9 +32,10 @@ impl ZcashCoinGadget {
         serial_number: FpVar<F>,
         r: FpVar<F>,
         address_seed: FpVar<F>,
+        cs: ConstraintSystemRef<F>,
     ) -> Result<Vec<FpVar<F>>, SynthesisError> {
         let leaves = vec![serial_number.clone(), serial_number.clone()];
-        let cm_root_hash = MerkleTreeGadget::create_root_hash(leaves)?;
+        let cm_root_hash = MerkleTreeGadget::create_root_hash(leaves, cs);
         let mut holder = vec![];
         holder.extend_from_slice(&address_seed.to_bytes().unwrap());
         let unit_var = UnitVar::default();
