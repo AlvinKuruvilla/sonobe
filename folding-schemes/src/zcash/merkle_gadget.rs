@@ -45,7 +45,7 @@ impl MerkleTreeGadget {
         let root_hash = tree.root().unwrap();
 
         // Convert the root hash to a field element
-        let root_hash_field = F::from_be_bytes_mod_order(&root_hash);
+        let root_hash_field = F::from_le_bytes_mod_order(&root_hash);
 
         // Convert the root hash field element to an FpVar
         FpVar::new_witness(cs, || Ok(root_hash_field)).unwrap()
@@ -94,6 +94,7 @@ impl MerkleTreeGadget {
 
         let merkle_proof = tree.proof(&indices_to_prove);
         let merkle_root = tree.root().unwrap();
+        // println!("Merkle root: {:?}", merkle_root);
         // Serialize proof to pass it to the client
         let proof_bytes = merkle_proof.to_bytes();
 

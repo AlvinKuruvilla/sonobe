@@ -97,3 +97,6 @@ path = "../examples/ledger.rs"
 [[example]]
 name = "ts"
 path = "../examples/transaction_split.rs"
+[[example]]
+name = "fb"
+path = "../examples/fpvar_byte.rs"
