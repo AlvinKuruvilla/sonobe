@@ -1,3 +1,4 @@
+pub mod byte_utils;
 pub mod coin_circuit;
 pub mod coin_gadget;
 pub mod fq_hasher;
