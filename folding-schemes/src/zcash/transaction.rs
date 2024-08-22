@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use ark_crypto_primitives::crh::{
     sha256::constraints::{Sha256Gadget, UnitVar},
     CRHSchemeGadget,
@@ -13,8 +15,8 @@ use ark_relations::r1cs::ConstraintSystem;
 use ark_std::rand::thread_rng;
 
 use super::merkle_gadget::MerkleTreeGadget;
-type ROOT<F> = FpVar<F>;
-type SN<F> = FpVar<F>;
+type ROOT<F> = F;
+type SN<F> = F;
 
 #[derive(Clone)]
 pub struct Address<F: PrimeField> {
@@ -197,26 +199,31 @@ where
     }
 }
 pub struct Blockchain<F: PrimeField> {
-    inner: Vec<(ROOT<F>, SN<F>)>,
+    inner: HashMap<SN<F>, ROOT<F>>, // Use HashMap with serial numbers as keys
 }
+
 impl<F> Blockchain<F>
 where
     F: PrimeField,
 {
     pub fn new() -> Self {
-        Self { inner: Vec::new() }
+        Self {
+            inner: HashMap::new(),
+        }
     }
+
     pub fn append_transaction(&mut self, root: FpVar<F>, serial_number: FpVar<F>) {
-        // Check if the serial number is already in the `inner` Vec
-        for (_, existing_sn) in &self.inner {
-            let is_equal = serial_number.is_eq(existing_sn).unwrap();
-            if is_equal.value().unwrap() {
-                panic!("The serial number is already in the blockchain!");
-            }
+        // Convert FpVar<F> to concrete values
+        let root_value = root.value().unwrap();
+        let sn_value = serial_number.value().unwrap();
+
+        // Check if the serial number is already in the HashMap
+        if self.inner.contains_key(&sn_value) {
+            panic!("The serial number is already in the blockchain!");
         }
 
-        // Append the transaction to the `inner` Vec
-        self.inner.push((root, serial_number));
+        // Insert the transaction into the HashMap
+        self.inner.insert(sn_value, root_value);
     }
 }
 impl<F> Default for Blockchain<F>
