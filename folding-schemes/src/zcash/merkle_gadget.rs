@@ -100,17 +100,13 @@ impl MerkleTreeGadget {
 
         // Parse proof back on the client
         let proof = MerkleProof::<Sha256>::try_from(proof_bytes).unwrap();
-        assert!(proof.verify(
-            merkle_root,
-            &indices_to_prove,
-            &leaves_to_prove,
-            leaves.len()
-        ));
-        proof.verify(
+        let ret = proof.verify(
             merkle_root,
             &indices_to_prove,
             &leaves_to_prove,
             leaves.len(),
-        )
+        );
+        assert!(ret);
+        ret
     }
 }

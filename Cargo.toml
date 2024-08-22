@@ -2,6 +2,9 @@
 members = ["folding-schemes", "solidity-verifiers", "cli"]
 resolver = "2"
 
+[profile.release]
+debug = true
+
 [patch.crates-io]
 # The following patch is to use a version of ark-r1cs-std compatible with
 # v0.4.0 but that includes two cherry-picked commits from after v0.4.0 which

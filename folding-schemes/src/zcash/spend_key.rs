@@ -4,6 +4,8 @@ use ark_std::UniformRand;
 use std::collections::HashMap;
 
 #[derive(Clone)]
+// TODO: This is aan outdated type I think, transaction.rs will likely have a type we will use from now on
+// TODO: Eventually all of these extra types and example programs should be removed once we get our bearings with the workflow
 pub struct SpendKey {
     sn: Fr,
     // The value associated with a coin

@@ -100,3 +100,9 @@ path = "../examples/transaction_split.rs"
 [[example]]
 name = "fb"
 path = "../examples/fpvar_byte.rs"
+[[example]]
+name = "bt"
+path = "../examples/blockchain_tester.rs"
+
+[profile.release]
+debug = true

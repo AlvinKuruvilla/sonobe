@@ -9,4 +9,5 @@ pub mod public_ledger_gadget;
 pub mod spend_circuit;
 pub mod spend_key;
 pub mod t_circuit;
+pub mod transaction;
 pub mod zcash_hash_gadget;
