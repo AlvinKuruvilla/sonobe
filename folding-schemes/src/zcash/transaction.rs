@@ -82,13 +82,12 @@ where
     }
 }
 pub struct Transaction<F: PrimeField> {
-    transaction_id: FpVar<F>, // TODO: When we add a blockchain structure it should keep track of all previously used transaction_ids to enforce uniqueness
+    transaction_id: FpVar<F>,
     value: FpVar<F>,
     sender_address: Address<F>, // built from the spending key of the sender
     receiver_address: Address<F>, // built from the spending key of the receiver
     serial_number: TransactionSerialNumber<F>,
 }
-// TODO: Add support for transaction splitting
 impl<F> Transaction<F>
 where
     F: PrimeField,
@@ -169,16 +168,13 @@ where
 
         // Create the split transactions
         let mut split_transactions = Vec::new();
+        let mut rng = thread_rng();
 
         for (i, split_value) in split_values.into_iter().enumerate() {
-            // Generate a new transaction ID, based on the original ID and the index
-            let new_transaction_id = FpVar::<F>::new_input(cs.clone(), || {
-                Ok(F::from(i as u64)) // Unique ID based on index for simplicity
-            })
-            .unwrap();
+            let new_transaction_id =
+                FpVar::<F>::new_input(cs.clone(), || Ok(F::rand(&mut rng))).unwrap();
 
             // Create a new serial number for the split transaction
-            let mut rng = thread_rng();
             let new_serial_number = TransactionSerialNumber::new(
                 FpVar::new_input(cs.clone(), || Ok(F::rand(&mut rng))).unwrap(),
             );
